@@ -7,7 +7,6 @@
     <meta name="author" content="ORKEMEY">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/Chat/src/Style.css">
 
   <style>
   
@@ -80,17 +79,17 @@
 
         <form id="Messages" class="form-signin">
             <div id="divMessages" class="form-group purple-border">
-              <label>History</label>
+              <label id="MessagesLabel">Messages</label>
              <textarea id="Textbox" class="form-control" rows="7" placeholder="New messages" readonly></textarea>
          </div>
          
          <input id="History" class="btn btn-large btn-primary" type="submit" value="History"></input>        
-         <input id="Clear" class="btn btn-large btn-danger" type="reset" value="Clear"></input>
+         <input id="Clear" class="btn btn-large btn-danger" type="button" value="Clear"></input>
 
         </form>
 
         <form id="Signin" class="form-signin">
-          <h2 class="form-signin-heading">Please sign in</h2>
+          <h2 class="form-signin-heading">Write a message</h2>
           <input type="text" id="Name" class="input-block-level" placeholder="Name">
           <input type="text" id="Message" class="input-block-level" placeholder="Message">
           <input type="submit" class="btn btn-large btn-primary" value="Send" type="submit"></input>
@@ -115,14 +114,22 @@
     var $formSignin = $("#Signin"); // форма с авторизацией
     var $Name = $("#Name"); // имя пользователя
     var $Message = $("#Message");
-    var $History = $("#History"); 
     var $Clear = $("#Clear"); // очищение истории
-    var $textarea = $("#Textbox"); // сообщение
-    var $formMessages = $("#Messages"); // форма с сообщениями
+    var $textarea = $("#Textbox");// сообщение
+    var $formMessages = $("#Messages");
+    var $label = $("#MessagesLabel");
 
     $formSignin.submit(function (event) {
        event.preventDefault();
-        socket.emit('send_message', { message: $Message.val(), name: $Name.val() });
+
+       if(String($Name.val()).length != 0){
+
+          $label.replaceWith('<label id="MessagesLabel">Messages</label>');
+          $label = $("#MessagesLabel");
+          socket.emit('send_message', { message: $Message.val(), name: $Name.val() });
+        }
+        else  alert('Write your name to send message');
+        
         $Message.val(''); 
     });
 
@@ -132,25 +139,26 @@
 
     $formMessages.submit(function (event) {
         event.preventDefault();
-        socket.emit('history');
+        if(String($Name.val()).length != 0){
+          
+          $label.replaceWith('<label id="MessagesLabel">History</label>');
+          $label = $("#MessagesLabel");
+        socket.emit('history', $Name.val());
+        }else{
+          alert('Write your name to check history');
+        }
     });
 
-    socket.on('output_history', function (data) {
-        $textarea.append(data.name + ": " + data.message + "\n");
-    });
-
-/* $Clear.submit(function (event) {
-    event.preventDefault();
-    alert('clear');
-    socket.emit('clear_history');
-});*/
+    Clear.onclick = function() {
+      $textarea.empty();
+    }
 
   socket.on('clear', function () {
-    $textarea.val('');
+    $textarea.empty();
   });
      
   </script>
     
-    </body>
+  </body>
 
 </html>
