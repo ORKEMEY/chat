@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+    <meta charset="utf-8">
+    <title>Chat</title>
+    <meta name="author" content="ORKEMEY">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/Chat/src/Style.css">
+
+  <style>
+  
+  body {
+    padding-top: 20px;
+    padding-bottom: 40px;
+  }
+  .container-auto {
+    margin: 0 auto;
+    max-width: auto;
+  }
+  .container-narrow {
+    margin: 0 auto;
+    max-width: 1000px;
+  }
+  .container-narrow > hr {
+    margin: 30px 0;
+  }
+
+  .form-signin {
+    max-width: 300px;
+    padding: 19px 29px 29px;
+    margin: 0 auto 20px;
+    background-color: #fff;
+    border: 1px solid #e5e5e5;
+    -webkit-border-radius: 5px;
+       -moz-border-radius: 5px;
+            border-radius: 5px;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+       -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+            box-shadow: 0 1px 2px rgba(0,0,0,.05);
+  }
+  .form-signin .form-signin-heading,
+  .form-signin .checkbox {
+    margin-bottom: 10px;
+  }
+  .form-signin input[type="text"],
+  .form-signin input[type="password"] {
+    font-size: 16px;
+    height: auto;
+    margin-bottom: 15px;
+    padding: 7px 9px;
+  }
+
+  #maindiv{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items:center;
+  }
+
+  
+  
+  
+  </style>
+
+  </head>
+  <body>
+
+    <div class="container-auto">
+
+
+        <nav class="navbar navbar-dark bg-primary">
+            <a class="navbar-brand">Chat! </a>
+          </nav>
+
+      <hr>
+      
+      <div id="maindiv" class="container-narrow">
+
+        <form id="Messages" class="form-signin">
+            <div id="divMessages" class="form-group purple-border">
+              <label>History</label>
+             <textarea id="Textbox" class="form-control" rows="7" placeholder="New messages" readonly></textarea>
+         </div>
+         
+         <input id="History" class="btn btn-large btn-primary" type="submit" value="History"></input>        
+         <input id="Clear" class="btn btn-large btn-danger" type="reset" value="Clear"></input>
+
+        </form>
+
+        <form id="Signin" class="form-signin">
+          <h2 class="form-signin-heading">Please sign in</h2>
+          <input type="text" id="Name" class="input-block-level" placeholder="Name">
+          <input type="text" id="Message" class="input-block-level" placeholder="Message">
+          <input type="submit" class="btn btn-large btn-primary" value="Send" type="submit"></input>
+  
+        </form>
+
+      </div>
+
+      <hr>
+
+      <div class="footer">
+        <p>© Artem Poshukailo</p>
+      </div>
+
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    
+  <script>
+    var socket = io.connect();
+    var $formSignin = $("#Signin"); // форма с авторизацией
+    var $Name = $("#Name"); // имя пользователя
+    var $Message = $("#Message");
+    var $History = $("#History"); 
+    var $Clear = $("#Clear"); // очищение истории
+    var $textarea = $("#Textbox"); // сообщение
+    var $formMessages = $("#Messages"); // форма с сообщениями
+
+    $formSignin.submit(function (event) {
+       event.preventDefault();
+        socket.emit('send_message', { message: $Message.val(), name: $Name.val() });
+        $Message.val(''); 
+    });
+
+    socket.on('add_message', function (data) {
+    $textarea.append(data.name + ": " + data.message + "\n");
+    });
+
+    $formMessages.submit(function (event) {
+        event.preventDefault();
+        socket.emit('history');
+    });
+
+    socket.on('output_history', function (data) {
+        $textarea.append(data.name + ": " + data.message + "\n");
+    });
+
+/* $Clear.submit(function (event) {
+    event.preventDefault();
+    alert('clear');
+    socket.emit('clear_history');
+});*/
+
+  socket.on('clear', function () {
+    $textarea.val('');
+  });
+     
+  </script>
+    
+    </body>
+
+</html>

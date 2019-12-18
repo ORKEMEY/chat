@@ -1,0 +1,5 @@
+#Налаштування ігнорування файлів
+.firebase/
+*node_modules/
+.vscode/
+/.git
