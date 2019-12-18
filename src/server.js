@@ -16,16 +16,16 @@ app.get('/', (request, response) => {
 
 ConnectedUsersSockets = [];
 
-io.sockets.on('connection', (socket) => {
+io.sockets.on('connection', socket => {
   console.log(`Connected ${socket.id}`);
   ConnectedUsersSockets.push(socket);
 
-  socket.on('disconnect', (data) => {
+  socket.on('disconnect', data => {
     ConnectedUsersSockets.splice(ConnectedUsersSockets.indexOf(socket), 1);
     console.log(`Disconnected ${socket.id}`);
   });
 
-  socket.on('send_message', (data) => {
+  socket.on('send_message', data => {
     io.sockets.emit('add_message', { message: data.message, name: data.name });
 
     const mongoClient = new MongoClient(url, { useUnifiedTopology: true });
@@ -66,7 +66,7 @@ io.sockets.on('connection', (socket) => {
 
         socket.emit('clear');
 
-        results.forEach((element) => {
+        results.forEach(element => {
           socket.emit('add_message', { message: element.message, name: element.name });
         });
 
