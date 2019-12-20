@@ -8,19 +8,17 @@ module.exports = {
   parser: 'babel-eslint',
   rules: {
     'linebreak-style': 'off',
-    camelcase: 'off',
     'no-unused-vars': 'off',
-    'no-continue': 'off',
-    'no-plusplus': 'off',
-    'no-param-reassign': 'off',
-    'prettier/prettier': ['error'],
+    'prettier/prettier': 'off',
     'no-undef': 'off',
     'no-arrow-parens': 'off',
     'no-console': 'off',
     'consistent-return': 'off',
-    'consistent-return': 'off',
     'no-shadow': 'off',
-    'no-shadow': 'off',
-    'prettier/prettier': 'off'
+    'no-alert': 'off',
+    'func-names': 'off',
+    'arrow-parens' : 'off',
+    'space-before-function-paren' : 'off'
+
   },
 };

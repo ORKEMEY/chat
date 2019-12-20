@@ -7,61 +7,7 @@
     <meta name="author" content="ORKEMEY">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-
-  <style>
-  
-  body {
-    padding-top: 20px;
-    padding-bottom: 40px;
-  }
-  .container-auto {
-    margin: 0 auto;
-    max-width: auto;
-  }
-  .container-narrow {
-    margin: 0 auto;
-    max-width: 1000px;
-  }
-  .container-narrow > hr {
-    margin: 30px 0;
-  }
-
-  .form-signin {
-    max-width: 300px;
-    padding: 19px 29px 29px;
-    margin: 0 auto 20px;
-    background-color: #fff;
-    border: 1px solid #e5e5e5;
-    -webkit-border-radius: 5px;
-       -moz-border-radius: 5px;
-            border-radius: 5px;
-    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-       -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-            box-shadow: 0 1px 2px rgba(0,0,0,.05);
-  }
-  .form-signin .form-signin-heading,
-  .form-signin .checkbox {
-    margin-bottom: 10px;
-  }
-  .form-signin input[type="text"],
-  .form-signin input[type="password"] {
-    font-size: 16px;
-    height: auto;
-    margin-bottom: 15px;
-    padding: 7px 9px;
-  }
-
-  #maindiv{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items:center;
-  }
-
-  
-  
-  
-  </style>
+    <link rel="stylesheet" href="style.css">
 
   </head>
   <body>
@@ -78,9 +24,10 @@
       <div id="maindiv" class="container-narrow">
 
         <form id="Messages" class="form-signin">
-            <div id="divMessages" class="form-group purple-border">
+          
+            <div class="form-group purple-border">
               <label id="MessagesLabel">Messages</label>
-             <textarea id="Textbox" class="form-control" rows="7" placeholder="New messages" readonly></textarea>
+             <textarea id="Textbox" class="form-control" cols="35" rows="7" placeholder="New messages" readonly></textarea>
          </div>
          
          <input id="History" class="btn btn-large btn-primary" type="submit" value="History"></input>        
@@ -88,12 +35,12 @@
 
         </form>
 
-        <form id="Signin" class="form-signin">
-          <h2 class="form-signin-heading">Write a message</h2>
-          <input type="text" id="Name" class="input-block-level" placeholder="Name">
-          <input type="text" id="Message" class="input-block-level" placeholder="Message">
-          <input type="submit" class="btn btn-large btn-primary" value="Send" type="submit"></input>
-  
+        <form id="Signin" class="form-signin form-send">
+          <h2 id="SendFormLabel" class="form-signin-heading">Please sign in</h2>
+          <input type="text" id="Login" class="input-block-level" placeholder="Login" >
+          <input type="password" id="Password" class="input-block-level" placeholder="Password" >
+          <input type="button" class="btn btn-large btn-success" id="btnSignIn" value="Sign in"></input>
+          <input type="button" class="btn btn-large btn-primary" id="btnLogIn" value="Log in"></input>
         </form>
 
       </div>
@@ -101,64 +48,15 @@
       <hr>
 
       <div class="footer">
-        <p>© Artem Poshukailo</p>
+        <p>© ORKEMEY</p>
       </div>
 
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    
-  <script>
-    var socket = io.connect();
-    var $formSignin = $("#Signin"); // форма с авторизацией
-    var $Name = $("#Name"); // имя пользователя
-    var $Message = $("#Message");
-    var $Clear = $("#Clear"); // очищение истории
-    var $textarea = $("#Textbox");// сообщение
-    var $formMessages = $("#Messages");
-    var $label = $("#MessagesLabel");
-
-    $formSignin.submit(function (event) {
-       event.preventDefault();
-
-       if(String($Name.val()).length != 0){
-
-          $label.replaceWith('<label id="MessagesLabel">Messages</label>');
-          $label = $("#MessagesLabel");
-          socket.emit('send_message', { message: $Message.val(), name: $Name.val() });
-        }
-        else  alert('Write your name to send message');
-        
-        $Message.val(''); 
-    });
-
-    socket.on('add_message', function (data) {
-    $textarea.append(data.name + ": " + data.message + "\n");
-    });
-
-    $formMessages.submit(function (event) {
-        event.preventDefault();
-        if(String($Name.val()).length != 0){
-          
-          $label.replaceWith('<label id="MessagesLabel">History</label>');
-          $label = $("#MessagesLabel");
-        socket.emit('history', $Name.val());
-        }else{
-          alert('Write your name to check history');
-        }
-    });
-
-    Clear.onclick = function() {
-      $textarea.empty();
-    }
-
-  socket.on('clear', function () {
-    $textarea.empty();
-  });
-     
-  </script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script> 
+    <script src="index.js"></script>
   </body>
 
 </html>
