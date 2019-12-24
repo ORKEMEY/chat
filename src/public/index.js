@@ -10,6 +10,8 @@ let $label = $('#MessagesLabel'); // название формы с сообще
 const $Password = $('#Password'); // пароль
 const $btnSignIn = $('#btnSignIn');
 const $btnLogIn = $('#btnLogIn');
+const $LogOut = $('#LogOut');
+
 let $btnSend;
 const $SendFormLabel = $('#SendFormLabel');
 let IsLogged = false;
@@ -20,7 +22,6 @@ socket.on('add_message', data => {
 
 $formMessages.submit(event => {
   event.preventDefault();
-
   if (IsLogged) {
     $label.replaceWith('<label id="MessagesLabel">History</label>');
     $label = $('#MessagesLabel');
@@ -52,7 +53,7 @@ btnLogIn.onclick = function() {
 
 socket.on('loggedin', () => {
   $SendFormLabel.replaceWith(
-    '  <h2 id="SendFormLabel" class="form-signin-heading">Write message</h2>',
+    '<h2 id="SendFormLabel" class="form-signin-heading">Write message</h2>',
   );
   $Login.replaceWith(
     `<input type="text" id="Login" class="input-block-level text-primary" value="${$Login.val()}" placeholder="Login" readonly>`,
@@ -62,6 +63,9 @@ socket.on('loggedin', () => {
   );
   $btnLogIn.replaceWith(
     '<input type="submit" class="btn btn-large btn-primary" id="btnSend" value="Send"></input>',
+  );
+  $LogOut.replaceWith(
+    ' <input id="btnLogOut" class="btn btn-large btn-danger" type="submit" value="Log out" ></input>',
   );
   $Message = $('#Message');
   $Login = $('#Login');
@@ -73,13 +77,11 @@ socket.on('loggedin', () => {
 
 $formSignin.submit(event => {
   event.preventDefault();
-
   if (String($Message.val()).length !== 0) {
     $label.replaceWith('<label id="MessagesLabel">Messages</label>');
     $label = $('#MessagesLabel');
     socket.emit('send_message', { message: $Message.val(), name: $Login.val() });
   } else alert('Write your message to send it');
-
   $Message.val('');
 });
 

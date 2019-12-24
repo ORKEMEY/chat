@@ -18,7 +18,7 @@ module.exports = {
     'no-alert': 'off',
     'func-names': 'off',
     'arrow-parens' : 'off',
-    'space-before-function-paren' : 'off'
-
+    'space-before-function-paren' : 'off',
+    'operator-linebreak' : 'off'
   },
 };

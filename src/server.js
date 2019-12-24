@@ -7,9 +7,11 @@ const crypto = require('crypto');
 
 const { MongoClient } = require('mongodb');
 
-const url = /* process.env['conurl'] || */ 'mongodb://localhost';
+const url =
+  'mongodb+srv://dbUser:kpi123@chat-5scd5.mongodb.net/usersdb?retryWrites=true&w=majority';
 
-server.listen(3000);
+const PORT = process.env.PORT || 3000;
+server.listen(PORT);
 
 app.use(express.static(`${__dirname}/public`));
 app.get('/', (request, response) => {
@@ -65,13 +67,12 @@ io.sockets.on('connection', socket => {
   });
 
   socket.on('login', data => {
-    const mongoClient = new MongoClient(url, { useUnifiedTopology: true });
+    const mongoClient = new MongoClient(url, { useNewUrlParser: true });
 
     mongoClient.connect((err, client) => {
       if (err) {
         return console.log(err);
       }
-
       const db = client.db('usersdb'); // подключение бд
       const usersdb = db.collection('users'); // создание коллекции
       const user = { name: data.name, password: data.password };
@@ -137,10 +138,8 @@ io.sockets.on('connection', socket => {
       if (err) {
         return console.log(err);
       }
-
       const db = client.db('usersdb'); // подключение бд
       const messages = db.collection('messages');
-
       messages.find().toArray((err, results) => {
         if (err) {
           return console.log(err);
