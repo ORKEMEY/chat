@@ -4,6 +4,3 @@ before_install:
   - npm i eslint
 script:
   - npm run test
-deploy:
-  provider: heroku
-  api_key: "API_KEY"

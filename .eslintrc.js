@@ -19,6 +19,7 @@ module.exports = {
     'func-names': 'off',
     'arrow-parens' : 'off',
     'space-before-function-paren' : 'off',
-    'operator-linebreak' : 'off'
+    'operator-linebreak' : 'off',
+    'import/no-dynamic-require' : 'off'
   },
 };
