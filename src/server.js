@@ -6,21 +6,16 @@ const io = require('socket.io').listen(server);
 const mongoose = require('mongoose');
 
 const CONFIG = require(`${__dirname}/../config.json`);
+const SCHEME = require(`${__dirname}/../models.json`);
 const { URL } = CONFIG;
 const PORT = process.env.PORT || CONFIG.PORT;
 
 const { Schema } = mongoose;
-const userScheme = new Schema({ //todo: add models.js
-  name: String,
-  password: String,
-});
-const messageScheme = new Schema({
-  name: String,
-  message: String,
-});
+const userScheme = SCHEME.userScheme;
+const messageScheme = SCHEME.messageScheme;
+
 mongoose.connect(URL, { useUnifiedTopology: true });
 
-//todo: mongoose hydrate needed?
 const User = mongoose.model('User', userScheme);
 const Message = mongoose.model('Message', messageScheme);
 
@@ -29,7 +24,7 @@ server.listen(PORT, () => {
 });
 
 app.use(express.static(`${__dirname}/public`));
-app.get('/', (request, response) => { // todo:// index is also static ;)
+app.get('/', (request, response) => { 
   response.sendFile(`${__dirname}/index.html`);
 });
 
@@ -40,7 +35,7 @@ io.sockets.on('connection', socket => {
     console.log(`Disconnected ${socket.id}`);
   });
 
-  socket.on('signin', data => { //todo: typo
+  socket.on('signin', data => {
     const user = new User({
       name: data.name,
       password: data.password,
@@ -107,8 +102,6 @@ io.sockets.on('connection', socket => {
 
   socket.on('history', () => {
     // вывод истории
-
-    const Message = mongoose.model('Message', messageScheme);
 
     Message.find({}, (err, messages) => {
       if (err) return console.log(err);

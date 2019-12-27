@@ -1,4 +1,5 @@
-const socket = io.connect(); //todo: wrap all in selfinvoked function
+(function() {
+const socket = io.connect();
 
 let $formSignin = $('#Signin'); // форма с авторизацией
 let $Login = $('#Login'); // имя пользователя
@@ -95,4 +96,7 @@ socket.on('clear', () => {
 
 socket.on('alert', message => {
   alert(message);
+
 });
+
+}());

@@ -1,0 +1,19 @@
+{  
+    "userScheme" : {
+        "name" : {
+               "type": "String"
+        },
+        "password" : {
+            "type": "String"
+        }
+     },
+
+     "messageScheme" : {
+        "name" : {
+            "type": "String"
+        },
+           "message" : {
+             "type": "String"
+        }
+    }
+}
