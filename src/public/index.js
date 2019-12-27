@@ -1,4 +1,4 @@
-const socket = io.connect();
+const socket = io.connect(); //todo: wrap all in selfinvoked function
 
 let $formSignin = $('#Signin'); // форма с авторизацией
 let $Login = $('#Login'); // имя пользователя
@@ -52,7 +52,7 @@ btnLogIn.onclick = function() {
 };
 
 socket.on('loggedin', () => {
-  $SendFormLabel.replaceWith(
+  $SendFormLabel.replaceWith( //todo: try to not use innerHtml wrapper
     '<h2 id="SendFormLabel" class="form-signin-heading">Write message</h2>',
   );
   $Login.replaceWith(
