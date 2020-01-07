@@ -1,4 +1,3 @@
 {
-    "URL": "mongodb+srv://dbUser:web123kpi@chat-5scd5.mongodb.net/usersdb?retryWrites=true&w=majority",
     "PORT" : "3000"
 }

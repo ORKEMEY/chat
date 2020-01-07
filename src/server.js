@@ -7,10 +7,9 @@ const mongoose = require('mongoose');
 
 const CONFIG = require(`${__dirname}/../config.json`);
 const SCHEME = require(`${__dirname}/../models.json`);
-const { URL } = CONFIG;
+const URL = process.env.CONFIG_URL;
 const PORT = process.env.PORT || CONFIG.PORT;
 
-const { Schema } = mongoose;
 const userScheme = SCHEME.userScheme;
 const messageScheme = SCHEME.messageScheme;
 
